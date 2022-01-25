@@ -1,7 +1,7 @@
 class CarSystem {
   //CarSystem - 
   //Her kan man lave en generisk alogoritme, der skaber en optimal "hjerne" til de forhåndenværende betingelser
-  
+
   ArrayList<CarController> CarControllerList  = new ArrayList<CarController>();
 
   CarSystem(int populationSize) {
@@ -21,5 +21,9 @@ class CarSystem {
     for (CarController controller : CarControllerList) {
       controller.display();
     }
+  }
+
+  void EliminateCar(int x) {
+    CarControllerList.remove(x);
   }
 }
