@@ -27,7 +27,9 @@ class CarSystem {
     for (CarController x : CarControllerList) {
       if (!x.getFailure()) left++;
     }
-    //println(left);
+    textSize(20);
+    fill(255);
+    text(left+" tilbage",10,20);
   }
 
   void EliminateCar(int x) {

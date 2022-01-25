@@ -1,6 +1,7 @@
 //populationSize: Hvor mange "controllere" der genereres, controller = bil & hjerne & sensorer
-int populationSize  = 500;     
+int populationSize  = 300;     
 boolean showSensors = true;
+int iterationTime = 25; //sekunder
 
 //CarSystem: Indholder en population af "controllere" 
 CarSystem carSystem       = new CarSystem(populationSize);
@@ -19,6 +20,7 @@ void draw() {
   fill(255);
   rect(0, 50, 1000, 1000);
   image(trackImage, 0, 80);  
+  println(millis());
 
   carSystem.updateAndDisplay(showSensors);
 
