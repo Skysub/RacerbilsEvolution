@@ -98,4 +98,8 @@ class SensorSystem {
     sensorVectorRight.set(sensorVectorFront);
     sensorVectorRight.rotate(sensorAngle);
   }
+
+  float getGreen() {
+    return clockWiseRotationFrameCounter;
+  }
 }

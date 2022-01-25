@@ -1,5 +1,6 @@
 //populationSize: Hvor mange "controllere" der genereres, controller = bil & hjerne & sensorer
-int populationSize  = 100;     
+int populationSize  = 500;     
+boolean showSensors = true;
 
 //CarSystem: Indholder en population af "controllere" 
 CarSystem carSystem       = new CarSystem(populationSize);
@@ -10,7 +11,7 @@ PImage    trackImage;
 void setup() {
   size(500, 600);
   trackImage = loadImage("track.png");
-  frameRate(10);
+  frameRate(30);
 }
 
 void draw() {
@@ -19,13 +20,14 @@ void draw() {
   rect(0, 50, 1000, 1000);
   image(trackImage, 0, 80);  
 
-  carSystem.updateAndDisplay();
+  carSystem.updateAndDisplay(showSensors);
 
-  if (frameCount%5==0) {
+  //println(carSystem.CarControllerList.get(0).sensorSystem.getGreen());
+  /*if (frameCount%5==0) {
 
     for (int i = carSystem.CarControllerList.size()-1; i >= 0; i--) {
       SensorSystem s = carSystem.CarControllerList.get(i).sensorSystem;
       if (s.whiteSensorFrameCount > 0) carSystem.EliminateCar(i);
     }
-  }
+  }*/
 }

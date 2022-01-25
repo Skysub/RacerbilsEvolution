@@ -11,16 +11,23 @@ class CarSystem {
     }
   }
 
-  void updateAndDisplay() {
+  void updateAndDisplay(boolean showSensors) {
     //1.) Opdaterer sensorer og bilpositioner
-    for (CarController controller : CarControllerList) {
-      controller.update();
+    for (CarController x : CarControllerList) {
+      if (!x.getFailure()) x.update();
     }
 
     //2.) Tegner tilsidst - så sensorer kun ser banen og ikke andre biler!
-    for (CarController controller : CarControllerList) {
-      controller.display();
+    for (CarController x : CarControllerList) {
+      if (!x.getFailure()) x.display(showSensors);
     }
+
+    // hvor mange er der tilbage på banen?
+    int left = 0;
+    for (CarController x : CarControllerList) {
+      if (!x.getFailure()) left++;
+    }
+    //println(left);
   }
 
   void EliminateCar(int x) {

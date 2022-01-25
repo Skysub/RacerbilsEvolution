@@ -1,10 +1,11 @@
 class CarController {
   //Forbinder - Sensorer & Hjerne & Bil
   float varians             = 2; //hvor stor er variansen på de tilfældige vægte og bias
+  boolean failure = false;
   Car bil                    = new Car();
   NeuralNetwork hjerne       = new NeuralNetwork(varians); 
   SensorSystem  sensorSystem = new SensorSystem();
-      
+
   void update() {
     //1.)opdtarer bil 
     bil.update();
@@ -18,10 +19,22 @@ class CarController {
     turnAngle = hjerne.getOutput(x1, x2, x3);    
     //4.)bilen drejes
     bil.turnCar(turnAngle);
+    checkOutside();
   }
-  
-  void display(){
+
+  void display(boolean showSensors) {
     bil.displayCar();
-    sensorSystem.displaySensors();
+    if (showSensors)sensorSystem.displaySensors();
+  }
+
+  boolean getFailure() {
+    return failure;
+  }
+
+  void checkOutside() {
+    if (frameCount%5==0) {
+      if (sensorSystem.whiteSensorFrameCount > 0) failure = true;
+      ;
+    }
   }
 }
