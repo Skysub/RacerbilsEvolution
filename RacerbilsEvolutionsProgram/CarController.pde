@@ -16,7 +16,7 @@ class CarController {
 
   void update() {
     //1.)opdtarer bil 
-    bil.update();
+    bil.update(); //<>//
     //2.)opdaterer sensorer    
     sensorSystem.updateSensorsignals(bil.pos, bil.vel);
     //3.)hjernen beregner hvor meget der skal drejes
@@ -31,12 +31,21 @@ class CarController {
     //if (fitness > 1)println(fitness);
   }
 
+  void setBrain(float[] weights) {
+    hjerne.setWeights(weights);
+  }
+
+  CarController newMe() {
+    CarController child = new CarController(varians);
+    child.setBrain(hjerne.getWeights());
+    return child;
+  }
+
   void Fitness() {
-    fitness = 0;
+    fitness = int(sensorSystem.getGreen());
     if (failure) {
-      fitness -= 100;
+      fitness = int(fitness/2f)-50;
     }
-    fitness += int(sensorSystem.getGreen());
     if (fitness < 0) fitness = 0;
   }
 
@@ -51,8 +60,8 @@ class CarController {
   }
 
   void reset() {
-    //bil = new Car();
-    //sensorSystem = new SensorSystem();
+    bil = new Car();
+    sensorSystem = new SensorSystem();
     failure = false;
   }
 

@@ -13,7 +13,7 @@ class CarSystem {
   }
 
   void updateAndDisplay(boolean showSensors) {
-    println(CarControllerList[0].getPos());
+    //println(CarControllerList[0].getPos()); //<>//
     //1.) Opdaterer sensorer og bilpositioner
     for (CarController x : CarControllerList) {
       if (!x.getFailure()) x.update();
@@ -31,7 +31,7 @@ class CarSystem {
     }
     textSize(20);
     fill(255);
-    text("Tilbage: "+left, 250, 20);
+    text("Tilbage: "+left, 375, 20);
 
     //println(CarControllerList.get(10).getFitness());
   }

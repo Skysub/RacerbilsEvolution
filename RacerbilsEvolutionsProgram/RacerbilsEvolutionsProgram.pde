@@ -1,12 +1,12 @@
-//populationSize: Hvor mange "controllere" der genereres, controller = bil & hjerne & sensorer //<>// //<>//
-int populationSize  = 1000;
+//populationSize: Hvor mange "controllere" der genereres, controller = bil & hjerne & sensorer //<>// //<>// //<>//
+int populationSize  = 500;
 float varians = 2;
 int iterationTime = 10; //sekunder
 Keyboard kb;
 int iteration = 0, bestFit = 0;
-float mutationRate = 0.02, mutA = 0.01;
+float mutationRate = 0.05, mutA = 0.05;
 ArrayList<CarController> matingPool;
-int timer = 0;
+int timer = 0, maxFit = 0;
 
 //CarSystem: Indholder en population af "controllere" 
 CarSystem carSystem       = new CarSystem(populationSize, varians);
@@ -32,8 +32,9 @@ void draw() {
   textSize(20);
   fill(255);
   text("Iteration: "+iteration, 5, 45);
-  text("Best Fitness: "+bestFit, 250, 45);
+  text("Max Fitness: "+bestFit, 170, 20); //ændrede variabelnavnet ret sent
   text("Time: "+int(millis()/1000f), 5, 20);
+  text("Best Fitness: "+maxFit, 170, 45);
 }
 
 
@@ -43,18 +44,21 @@ void RunIteration() {
   for (CarController x : pop) {
     x.Fitness();
   }
+  for (CarController x : pop) {
+    if (x.getFitness() > bestFit) { 
+      bestFit = x.getFitness();
+    }
+  }
+  carSystem.updateAndDisplay(kb.getToggle(88));
   if (millis() > timer+iterationTime*1000) {
     timer = millis();
-
+    if (bestFit > maxFit) maxFit = bestFit;
+    
     //Build mating pool
     matingPool = new ArrayList<CarController>();
     bestFit = 1;
 
-    for (CarController x : pop) {
-      if (x.getFitness() > bestFit) { 
-        bestFit = x.getFitness();
-      }
-    }
+
 
     for (CarController x : pop) {
       int n = int((x.getFitness() / bestFit) * 100);
@@ -72,14 +76,13 @@ void RunIteration() {
        CarController child = partnerA.Crossover(partnerB);
        child.Mutate(mutationRate, varians);
        x = child;*/
-      CarController child = matingPool.get(int(random(matingPool.size())));
+      CarController child = matingPool.get(int(random(matingPool.size()))).newMe();
       child.Mutate(mutationRate, mutA);
       pop[i] = child;
     }
     carSystem.newIteration();
     iteration++;
   }
-  carSystem.updateAndDisplay(kb.getToggle(88));
 }
 
 

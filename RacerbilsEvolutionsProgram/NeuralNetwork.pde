@@ -52,4 +52,10 @@ class NeuralNetwork {
   float[] getWeights() {
     return weights;
   }
+
+  void setWeights(float[] x) {
+    for (int i = 0; i < 8; i++) {
+      weights[i] = x[i];
+    }
+  }
 }
