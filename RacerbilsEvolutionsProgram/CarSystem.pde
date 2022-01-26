@@ -29,10 +29,16 @@ class CarSystem {
     }
     textSize(20);
     fill(255);
-    text(left+" tilbage",10,20);
+    text("Tilbage: "+left, 250, 20);
+    
+    //println(CarControllerList.get(10).getFitness());
   }
 
   void EliminateCar(int x) {
     CarControllerList.remove(x);
+  }
+
+  ArrayList<CarController> getPop() {
+    return CarControllerList;
   }
 }

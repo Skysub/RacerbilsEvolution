@@ -31,7 +31,7 @@ class Keyboard {
     return false;
   }
 
-  public void toggle(int x) {
+  public void Toggle(int x) {
     if (getKey(x) && !getOldKey(x)) {
       keys[x].Toggle();
     }
