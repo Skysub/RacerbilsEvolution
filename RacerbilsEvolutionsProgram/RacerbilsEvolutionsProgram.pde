@@ -37,8 +37,6 @@ void draw() {
   text("Best Fitness: "+maxFit, 170, 45);
 }
 
-
-
 void RunIteration() {
   CarController[] pop = carSystem.getPop();
   for (CarController x : pop) {
@@ -53,7 +51,7 @@ void RunIteration() {
   if (millis() > timer+iterationTime*1000) {
     timer = millis();
     if (bestFit > maxFit) maxFit = bestFit;
-    
+
     //Build mating pool
     matingPool = new ArrayList<CarController>();
     bestFit = 1;

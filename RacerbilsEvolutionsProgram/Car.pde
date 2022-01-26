@@ -17,7 +17,7 @@ class Car {
   }
 
   void displayCar() {
-    stroke(100);
+    stroke(150);
     fill(100);
     ellipse(pos.x, pos.y, 10, 10);
   }
