@@ -1,11 +1,18 @@
 class CarController {
   //Forbinder - Sensorer & Hjerne & Bil
-  float varians             = 2; //hvor stor er variansen på de tilfældige vægte og bias
+  float varians; //hvor stor er variansen på de tilfældige vægte og bias
   boolean failure = false;
-  int fitness = 1;
-  Car bil                    = new Car();
-  NeuralNetwork hjerne       = new NeuralNetwork(varians); 
-  SensorSystem  sensorSystem = new SensorSystem();
+  int fitness = 0;
+  Car bil;                    
+  NeuralNetwork hjerne;       
+  SensorSystem  sensorSystem;
+
+  CarController(float v) {
+    varians = v;
+    bil = new Car();
+    hjerne = new NeuralNetwork(varians); 
+    sensorSystem = new SensorSystem();
+  }
 
   void update() {
     //1.)opdtarer bil 
@@ -25,11 +32,28 @@ class CarController {
   }
 
   void Fitness() {
+    fitness = 0;
     if (failure) {
-      fitness = 1;
-      return;
+      fitness -= 100;
     }
-    fitness = int(sensorSystem.getGreen());
+    fitness += int(sensorSystem.getGreen());
+    if (fitness < 0) fitness = 0;
+  }
+
+  CarController Crossover(CarController partner) {
+    CarController child = new CarController(varians);
+    child.SetNewBrain(hjerne.Crossover(partner.getHjerne()));
+    return child;
+  }
+
+  void Mutate(float mutationRate, float mutA) {
+    hjerne.Mutate(mutationRate, mutA);
+  }
+
+  void reset() {
+    //bil = new Car();
+    //sensorSystem = new SensorSystem();
+    failure = false;
   }
 
   void display(boolean showSensors) {
@@ -43,6 +67,18 @@ class CarController {
 
   int getFitness() {
     return fitness;
+  }
+
+  NeuralNetwork getHjerne() {
+    return hjerne;
+  }
+
+  PVector getPos() {
+    return bil.getPos();
+  }
+
+  void SetNewBrain(NeuralNetwork x) {
+    hjerne = x;
   }
 
   void checkOutside() {

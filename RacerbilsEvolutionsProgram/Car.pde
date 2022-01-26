@@ -1,7 +1,12 @@
 class Car {  
   //Bil - indeholder position & hastighed & "tegning"
-  PVector pos = new PVector(60, 232);
-  PVector vel = new PVector(0, 5);
+  PVector pos;
+  PVector vel;
+
+  Car() {
+    pos  = new PVector(60, 232);
+    vel  = new PVector(0, 5);
+  }
 
   void turnCar(float turnAngle) {
     vel.rotate(turnAngle);

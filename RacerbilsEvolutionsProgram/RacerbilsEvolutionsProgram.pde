@@ -1,15 +1,15 @@
-//populationSize: Hvor mange "controllere" der genereres, controller = bil & hjerne & sensorer //<>//
-int populationSize  = 300;
-int iterationTime = 25; //sekunder
+//populationSize: Hvor mange "controllere" der genereres, controller = bil & hjerne & sensorer //<>// //<>//
+int populationSize  = 1000;
+float varians = 2;
+int iterationTime = 10; //sekunder
 Keyboard kb;
-int iteration = 0, bestFit = 1;
-boolean once = false;
-int mutationRate = 20;
-float mutationAmount = 0.2f;
+int iteration = 0, bestFit = 0;
+float mutationRate = 0.02, mutA = 0.01;
 ArrayList<CarController> matingPool;
+int timer = 0;
 
 //CarSystem: Indholder en population af "controllere" 
-CarSystem carSystem       = new CarSystem(populationSize);
+CarSystem carSystem       = new CarSystem(populationSize, varians);
 
 //trackImage: RacerBanen , Vejen=sort, Udenfor=hvid, Målstreg= 100%grøn 
 PImage    trackImage;
@@ -17,7 +17,7 @@ PImage    trackImage;
 void setup() {
   size(500, 600);
   trackImage = loadImage("track.png");
-  frameRate(30);
+  frameRate(60);
   kb = new Keyboard();
 }
 
@@ -39,12 +39,12 @@ void draw() {
 
 
 void RunIteration() {
-  ArrayList<CarController> pop = carSystem.getPop();
+  CarController[] pop = carSystem.getPop();
   for (CarController x : pop) {
     x.Fitness();
   }
-  if (millis() % 25000 == 0 && !once) {
-    once = true;
+  if (millis() > timer+iterationTime*1000) {
+    timer = millis();
 
     //Build mating pool
     matingPool = new ArrayList<CarController>();
@@ -64,19 +64,21 @@ void RunIteration() {
     }
 
     //Reproduce
-    for (CarController x : pop) {
-      int a = int(random(matingPool.size()));
-      int b = int(random(matingPool.size()));
-      CarController partnerA = matingPool.get(a);
-      CarController partnerB = matingPool.get(b);
-      CarController child = partnerA.Crossover(partnerB);
-      child.Mutate(mutationRate/1000f);
-      population[i] = child;
+    for (int i = 0; i < pop.length; i++) {
+      /*int a = int(random(matingPool.size()));
+       int b = int(random(matingPool.size()));
+       CarController partnerA = matingPool.get(a);
+       CarController partnerB = matingPool.get(b);
+       CarController child = partnerA.Crossover(partnerB);
+       child.Mutate(mutationRate, varians);
+       x = child;*/
+      CarController child = matingPool.get(int(random(matingPool.size())));
+      child.Mutate(mutationRate, mutA);
+      pop[i] = child;
     }
     carSystem.newIteration();
     iteration++;
   }
-  if (millis() % 25000 != 0 && once)once = false;
   carSystem.updateAndDisplay(kb.getToggle(88));
 }
 

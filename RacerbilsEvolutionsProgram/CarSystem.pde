@@ -2,16 +2,18 @@ class CarSystem {
   //CarSystem - 
   //Her kan man lave en generisk alogoritme, der skaber en optimal "hjerne" til de forhåndenværende betingelser
 
-  ArrayList<CarController> CarControllerList  = new ArrayList<CarController>();
+  CarController[] CarControllerList;
 
-  CarSystem(int populationSize) {
+  CarSystem(int populationSize, float varians) {
+    CarControllerList = new CarController[populationSize];
     for (int i=0; i<populationSize; i++) { 
-      CarController controller = new CarController();
-      CarControllerList.add(controller);
+      CarController controller = new CarController(varians);
+      CarControllerList[i] = controller;
     }
   }
 
   void updateAndDisplay(boolean showSensors) {
+    println(CarControllerList[0].getPos());
     //1.) Opdaterer sensorer og bilpositioner
     for (CarController x : CarControllerList) {
       if (!x.getFailure()) x.update();
@@ -30,15 +32,18 @@ class CarSystem {
     textSize(20);
     fill(255);
     text("Tilbage: "+left, 250, 20);
-    
+
     //println(CarControllerList.get(10).getFitness());
   }
 
-  void EliminateCar(int x) {
-    CarControllerList.remove(x);
+
+  CarController[] getPop() {
+    return CarControllerList;
   }
 
-  ArrayList<CarController> getPop() {
-    return CarControllerList;
+  void newIteration() {
+    for (CarController x : CarControllerList) {
+      x.reset();
+    }
   }
 }
